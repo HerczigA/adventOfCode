@@ -6,13 +6,15 @@ project(${PROJECT})
 
 file(GLOB SOURCES adventUtil/*.cpp
     firstDay/*.cpp 
-    secondDay/*.cpp 
+    secondDay/*.cpp
+    thirdDay/*.cpp 
     main.cpp
     )
 
 file(GLOB HEADERS adventUtil/*.h
     firstDay/*.h
     secondDay/*.h
+    thirdDay/*.h
     )
 
 message(STATUS "These are the sources :" ${SOURCES})

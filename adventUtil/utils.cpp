@@ -6,14 +6,13 @@ string& Days::getFileName(int index)
 }
 
 int Days::openInput(string& file, ifstream& myfile)
-{
-    
+{   
     myfile.open(file, ios::in);
     if(!myfile.is_open()) {
       perror("Error open");
       return -1;
     }
-    
+       
     return 0;
 }
 
@@ -46,6 +45,18 @@ void Days::getInput(string& filePath, multimap<string, string>& data)
         first = line[0];
         second = line[2];
         data.insert(pair<string, string>(first, second));
+    }
+    myfile.close();
+}
+void Days::getInput(string& filePath, vector<string>& data)  {
+    int result;
+    ifstream myfile;
+    string line;
+    result = openInput(filePath, myfile);
+    if(result)
+        return;
+    while(getline(myfile, line)) {
+        data.push_back(line);
     }
     myfile.close();
 }

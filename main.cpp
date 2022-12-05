@@ -1,6 +1,7 @@
 #include "adventUtil/utils.h"
 #include "firstDay/firstDay.h"
 #include "secondDay/secondDay.h"
+#include "thirdDay/thirdDay.h"
 
 // second part 2 wrong 14431
 
@@ -21,6 +22,12 @@ int main(int argc, char **argv)
     path = days->getFileName(1);
     days->getInput(path, secondResults);
     days->doWork(&secondResults);
+    ThirdDay thirdDay;
+    days = &thirdDay;
+    vector<string> thirdResults;
+    path = days->getFileName(2);
+    days->getInput(path, thirdResults);
+    days->doWork(&thirdResults);
 
 
     
