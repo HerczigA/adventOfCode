@@ -1,5 +1,5 @@
 #pragma once
-#include "../adventUtil/utils.h"
+#include "utils.h"
 
 class FirstDay : public Days{
     public:
@@ -10,15 +10,16 @@ class FirstDay : public Days{
 
         };
         ~FirstDay(){};
-        void doWork(void *param) override;
+        void doWork() override;
         void printResults() override;
         int getResWithoutNoise() const;
         int getResWithNoise() const;
+        void getInput(string& filePath) override;
         vector<int> getMeasurments() const;
 
     private:
-        void measureWithoutNoise(const vector<int>& measurments);
-        void measureWithNoise(const vector<int>& measurments);
+        void measureWithoutNoise();
+        void measureWithNoise();
         int mMeasursWithoutNoise;
         int mMeasursWithNoise;
         vector<int> mMeasurments;

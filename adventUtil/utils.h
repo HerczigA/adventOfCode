@@ -14,7 +14,9 @@ using namespace std;
     #define DEBUG_ADVENT 0
 #endif
 
-
+#ifndef USE_PROBE_FILE
+    #define USE_PROBE_FILE 0
+#endif
 
 
 class Days{
@@ -22,24 +24,26 @@ class Days{
         enum DAYS{
             FIRST_DAY,
             SECONDY_DAY,
-            THIRD_DAY
+            THIRD_DAY,
+            FOURTH_DAY
         };
         string& getFileName(int index);
-        virtual void getInput(string& filePath, vector<int>& data);
-        virtual void getInput(string& filePath, vector<string>& data);
-        virtual void getInput(string& filePath, multimap<string, string>& data);
-        virtual void doWork(void* param) = 0;
+        virtual void getInput(string& filePath) = 0;
+        virtual void doWork() = 0;
         virtual void printResults() = 0;
         virtual ~Days(){};
+    protected:
+        int openInput(string &filePath, ifstream& file);
     private:
-        int openInput(string &filePath, ifstream& myfile);
+        
         vector<string> mAdventInputs{
                     "../adventUtil/inputFirstDay.txt",
                     "../adventUtil/inputSecondDay.txt",
                     "../adventUtil/inputThirdDay.txt",
-                    "../adventUtil/proba.txt"
-        } ;
-
-        
+                    "../adventUtil/inputFourthDay.txt",
+                    #if USE_PROBE_FILE
+                    "../adventUtil/probe.txt"
+                    #endif
+        } ;      
 };
 

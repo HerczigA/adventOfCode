@@ -1,19 +1,17 @@
 #include "thirdDay.h"
 
 
-void ThirdDay::doWork(void *param)
+void ThirdDay::doWork()
 {
-    
-    vector<string> *itemsList = static_cast<vector<string>*>(param);
     vector<set<char>> group;
-    for(auto it = itemsList->begin(); it != itemsList->end(); it++)
+    for(auto it = mBuckets.begin(); it != mBuckets.end(); it++)
     {
         splitUp(*it);
         makeGroups(*it, group);
     }
     calculateSummaries();
-    
-    printResults();   
+    printResults();
+    group.clear();
 }
 
 void ThirdDay::printResults()
@@ -42,14 +40,12 @@ void ThirdDay::splitUp(string& line)
     {
         pattern2.insert(ch);
     }
-        
     
     getDuplicateItem(pattern, pattern2);
 }
 
 void ThirdDay::getDuplicateItem(const set<char>& pattern1, const set<char>& pattern2)
 {
-    
     for(auto ch: pattern1)
     {
         if(pattern2.find(ch)!= pattern2.end())
@@ -99,4 +95,20 @@ void ThirdDay::makeGroups(const string& line, vector<set<char>>& group)
         }
         group.clear();
     }
+}
+
+void ThirdDay::getInput(string& filePath)
+{
+    int result;
+    ifstream inputFile;
+    string line;
+    result = openInput(filePath, inputFile);
+    if(result)
+        return;
+    
+    while(getline(inputFile, line)) 
+    {
+        mBuckets.push_back(line);
+    }
+    inputFile.close();    
 }

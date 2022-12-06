@@ -1,10 +1,6 @@
 #include "secondDay.h"
 
-void SecondDay::doWork(void *param) {
-    if(!param)
-        return;
-    multimap<string, string> *prs = static_cast<multimap<string,string>*>(param);
-    mResults = *prs;
+void SecondDay::doWork() {
     encryptingStrategy();
     decryptingStrategy();
     printResults();
@@ -127,4 +123,23 @@ void SecondDay::printResults() {
         cout << "The summary of the gameset is: " << mDecryptedSummary << endl;    
     else
         cout << "There was some problem because value is 0" << endl;
+}
+
+void SecondDay::getInput(string& filePath) {
+    int result;
+    ifstream inputFile;
+    string line;
+    result = openInput(filePath, inputFile);
+    if(result)
+        return;
+    
+    while(getline(inputFile, line)) 
+    {
+        string first, second;
+        first = line[0];
+        second = line[2];
+        mResults.insert(pair<string, string>(first, second));
+    }
+    inputFile.close();
+        
 }

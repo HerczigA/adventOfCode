@@ -19,10 +19,10 @@ class ThirdDay : public Days
 
         };
         ~ThirdDay(){};
-        void doWork(void *param) override;
+        void doWork() override;
         void printResults() override;
         int getSummary() const;
-        
+        void getInput(string& filePath) override;
         vector<string> getMeasurments() const;
 
     private:
@@ -34,7 +34,7 @@ class ThirdDay : public Days
         int mSummaryOfGroups;
         int mMeasursWithNoise;
         int mGroupCounter;
-        // vector<vector<set<char>>> mGroups;
+        vector<string> mBuckets;
         vector<char> mDuplicatedItem;
         vector<char> mDuplicatedItemByGroups;
 };
