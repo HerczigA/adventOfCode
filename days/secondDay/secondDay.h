@@ -4,7 +4,7 @@
 class SecondDay : public Days{
     public:
         enum OPTIONS{
-            ROCK=1,
+            ROCK = 1,
             PAPER,
             SCRISSORS
         };

@@ -1,6 +1,5 @@
 #include "thirdDay.h"
 
-
 void ThirdDay::doWork()
 {
     vector<set<char>> group;
@@ -10,8 +9,10 @@ void ThirdDay::doWork()
         makeGroups(*it, group);
     }
     calculateSummaries();
+    //clear container because dont need anymore the memory 
+    mBuckets.clear();
     printResults();
-    group.clear();
+    
 }
 
 void ThirdDay::printResults()
@@ -85,9 +86,9 @@ void ThirdDay::makeGroups(const string& line, vector<set<char>>& group)
     {
         for(auto ch: group[FIRST_GROUP])
         {
-            if(group[SECOND_GROUP].find(ch)!= group[SECOND_GROUP].end())
+            if(group[SECOND_GROUP].find(ch) != group[SECOND_GROUP].end())
             {
-                if(group[THIRD__GROUP].find(ch)!= group[THIRD__GROUP].end())
+                if(group[THIRD__GROUP].find(ch) != group[THIRD__GROUP].end())
                 {
                     mDuplicatedItemByGroups.push_back(ch);
                 }

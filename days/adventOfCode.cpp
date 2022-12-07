@@ -10,7 +10,11 @@ AdventOfCode::AdventOfCode() {
 
 AdventOfCode::~AdventOfCode() {
     for(auto day : mDaysGroup)
-        delete day;
+    {
+        if(day)
+            delete day;   
+    }
+     
 }
 void AdventOfCode::openCalendarWindows() {
     Days* days;

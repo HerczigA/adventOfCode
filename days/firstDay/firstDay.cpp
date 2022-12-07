@@ -4,7 +4,7 @@ void FirstDay::measureWithoutNoise()
 {
     int prevMeasurment = mMeasurments[0];
     const auto lastMeasurment = mMeasurments.end();
-    for(auto it=mMeasurments.begin(); it< lastMeasurment; it++)
+    for(auto it = mMeasurments.begin(); it < lastMeasurment; it++)
     {
         if(*it > prevMeasurment)
             mMeasursWithoutNoise++;
@@ -20,9 +20,9 @@ void FirstDay::measureWithNoise()
     const auto lastMeasurment = mMeasurments.size() -2;
     for(int i = 1; i < lastMeasurment; i++)
     {
-        actualMeasurment =mMeasurments[i];
-        actualMeasurment +=mMeasurments[i+1];
-        actualMeasurment +=mMeasurments[i+2];
+        actualMeasurment = mMeasurments[i];
+        actualMeasurment += mMeasurments[i+1];
+        actualMeasurment += mMeasurments[i+2];
         if(actualMeasurment > prevMeasurment)
             mMeasursWithNoise++;
 
@@ -49,6 +49,8 @@ void FirstDay::printResults()
 void FirstDay::doWork() {
     measureWithoutNoise();
     measureWithNoise();
+    //clear container because dont need anymore the memory 
+    mMeasurments.clear();
     printResults();
 }
 

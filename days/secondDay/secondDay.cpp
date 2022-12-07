@@ -3,6 +3,8 @@
 void SecondDay::doWork() {
     encryptingStrategy();
     decryptingStrategy();
+    //clear container because dont need anymore the memory 
+    mResults.clear();
     printResults();
 }
 
