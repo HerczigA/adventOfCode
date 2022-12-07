@@ -2,12 +2,14 @@
 
 FourthDay::FourthDay()
     : mFullyOverlapping(0)
+    , mPartlyOverlapping(0)
 {
     
 }
 
 void FourthDay::doWork()
 {
+#if DEBUG_ADVENT
     string logName= "./logFourthDay.txt";
     ofstream logFourthDay(logName);
     if( !logFourthDay.is_open())
@@ -15,47 +17,48 @@ void FourthDay::doWork()
         cout << "Can not open file for log" << endl;
         return;
     }
-    int firstOverlaped=0;
-    int secondOverlaped=0;
+#endif    
     for(auto it: mSectionIDs)
     {
-        #if FULLY_OVERLAPPING
+        // #if FULLY_OVERLAPPING
 
             if((it.first[0] <= it.second[0]) && (it.second[1] <= it.first[1]))
             {
+                #if DEBUG_ADVENT
                 logFourthDay << "\nit.first[0]= "<< it.first[0] << "\t it.second[0]="  << it.second[0] <<"\n";
                 logFourthDay << "it.first[1]= "<< it.first[1]<< "\t it.second[1]="  << it.second[1] << "\n";
                 logFourthDay << "===============================";
+                #endif
                 mFullyOverlapping++;
-                firstOverlaped++;
             }
             else if((it.second[0] <= it.first[0]) && (it.first[1] <= it.second[1]))
             {
+                #if DEBUG_ADVENT
                 logFourthDay << "\nit.second[0]= "<< it.second[0] << "\t it.first[0]="  << it.first[0] <<"\n";
                 logFourthDay << "it.second[1]= "<< it.second[1] << "\t it.first[1]="  << it.first[1] << "\n";
                 logFourthDay << "===============================";
+                #endif
                 mFullyOverlapping++;
-                secondOverlaped++;
             }
-        #else
-            if(it.first[0] <= it.second[0] || it.first[1] >= it.second[1])
+        // #else
+            if(((it.first[0] <= it.second[0] && it.second[0] <= it.first[1])  
+            || (it.first[0] <= it.second[1] && it.second[1] <= it.first[1])))
             {
-                // cout << "it.first[0]= "<< it.first[0]<< "\tit.second[0]="  << it.second[0] << endl;
-                mFullyOverlapping++;
+                mPartlyOverlapping++;
             }   
-            else if(it.second[0] <= it.first[0] || it.second[1] >= it.first[1])
+            else if(((it.second[0] <= it.first[0] && it.first[0] <= it.second[1])  
+            || (it.second[0] <= it.first[1] && it.first[1] <= it.second[1])))
             {
-                // cout << "it.second[0]= "<< it.second[0]<< "\tit.first[0]="  << it.first[0] << endl;
-                mFullyOverlapping++;   
+                mPartlyOverlapping++;   
             }
 
-        #endif
+        // #endif
         
          
     }
-    cout << "first overlaped =\t " << firstOverlaped <<endl;
-    cout << "second overlaped =\t " << secondOverlaped <<endl;
-    logFourthDay.close();
+    #if DEBUG_ADVENT
+        logFourthDay.close();
+    #endif
     //clear container because dont need anymore the memory 
     mSectionIDs.clear();
     printResults();
@@ -63,7 +66,11 @@ void FourthDay::doWork()
 
 void FourthDay::printResults()
 {
-    cout << "Fully overlapping occured\t "<< mFullyOverlapping << " times"<< endl;
+    // #if FULLY_OVERLAPPING
+        cout << "Fully overlapping occured\t "<< mFullyOverlapping << " times"<< endl;
+    // #else
+        cout << "Overlapping occured\t "<< mPartlyOverlapping << " times"<< endl;
+    // #endif
 }
 
 void FourthDay::getInput(string& filePath)
@@ -74,23 +81,12 @@ void FourthDay::getInput(string& filePath)
     result = openInput(filePath, inputFile);
     if(result)
         return;
-    string logName= "./logParsing.txt";
-    ofstream logFourthDay(logName);
-    if( !logFourthDay.is_open())
-    {
-        cout << "Can not open file for log" << endl;
-        return;
-    }
+
     while(getline(inputFile, line)) 
     {
         integerArrayPairs pair = parsingPairs(line);
-        logFourthDay << "\npair.first[0]= "<< pair.first[0] << "\t pair.second[0]="  << pair.second[0] <<"\n";
-        logFourthDay << "pair.first[1]= "<< pair.first[1]<< "\t pair.second[1]="  << pair.second[1] << "\n";
         mSectionIDs.push_back(pair);
     }
-
-    logFourthDay.close();
-
     inputFile.close();
 }
 

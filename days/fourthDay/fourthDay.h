@@ -2,7 +2,7 @@
 #include "utils.h"
 
 #ifndef FULLY_OVERLAPPING
-    #define FULLY_OVERLAPPING 1
+    #define FULLY_OVERLAPPING 0
 #endif    
 
 using integerArrayPairs = pair<array<int,2>, array<int,2>>;
@@ -22,4 +22,5 @@ class FourthDay : public Days
         integerArrayPairs parsingPairs(string& line);
         fourthDayFormat mSectionIDs;
         int mFullyOverlapping;
+        int mPartlyOverlapping;
 };
