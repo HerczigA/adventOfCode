@@ -8,6 +8,9 @@
 using integerArrayPairs = pair<array<int,2>, array<int,2>>;
 using fourthDayFormat = vector<integerArrayPairs>;
 
+// first 20 -> 9
+// solution is 477 
+
 class FourthDay : public Days
 {
     public:
