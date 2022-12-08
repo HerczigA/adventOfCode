@@ -7,6 +7,8 @@
 #include <array>
 #include <map>
 #include <set>
+#include <bits/stdc++.h>
+#include <sstream>
 
 using namespace std;
 
@@ -41,6 +43,7 @@ class Days{
                     "../adventUtil/inputSecondDay.txt",
                     "../adventUtil/inputThirdDay.txt",
                     "../adventUtil/inputFourthDay.txt",
+                    "../adventUtil/inputFifthDay.txt",
                     #if USE_PROBE_FILE
                     "../adventUtil/probe.txt"
                     #endif

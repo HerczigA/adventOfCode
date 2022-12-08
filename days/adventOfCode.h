@@ -3,6 +3,7 @@
 #include "secondDay.h"
 #include "thirdDay.h"
 #include "fourthDay.h"
+#include "fifthDay.h"
 
 class AdventOfCode
 {

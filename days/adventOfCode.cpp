@@ -6,6 +6,7 @@ AdventOfCode::AdventOfCode() {
     mDaysGroup.push_back(new SecondDay);
     mDaysGroup.push_back(new ThirdDay);
     mDaysGroup.push_back(new FourthDay);
+    mDaysGroup.push_back(new FifthDay);
 }
 
 AdventOfCode::~AdventOfCode() {
