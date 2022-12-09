@@ -1,6 +1,5 @@
 #pragma once 
 #include "utils.h" 
-#include <sstream>
 
 const int columns = 9;
 class FifthDay : public Days 
@@ -9,7 +8,8 @@ class FifthDay : public Days
     {
         MOVE,
         FROM,
-        TO
+        TO,
+        STEPS
     };
     public:
         FifthDay();
@@ -19,7 +19,9 @@ class FifthDay : public Days
     private:
         void parsingCrates(vector<string>& crates);
         void parsingMovements(string& movement);
+        void catEndUpStacks();
         vector<vector<char>> mCrates;
         vector<vector<int>> mMoves;
+        string mEndUpStacks;
 };
         

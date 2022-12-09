@@ -1,6 +1,7 @@
 #include "fifthDay.h"
 
 FifthDay::FifthDay()
+    : mEndUpStacks("")
 {
     for(int i = 1; i <= columns ; i++)
     {
@@ -11,12 +12,27 @@ FifthDay::FifthDay()
 
 void FifthDay::doWork()
 {
+    char sign;
+    int lastElement;
+    for(auto& moves : mMoves)
+    {
 
+        for(int i = 0; i < moves[MOVE]; i++)
+        {
+            lastElement = mCrates[moves[FROM]-1].size();
+            sign = mCrates[moves[FROM]-1][lastElement-1];
+            mCrates[moves[FROM]-1].pop_back();
+            mCrates[moves[TO]-1].push_back(sign);
+            
+        }
+    }
+    catEndUpStacks();
+    printResults();
 }
 
 void FifthDay::printResults()
 {
-
+    cout << "End up stacks after rearranging\t"<< mEndUpStacks << endl;
 }
 
 void FifthDay::getInput(string& filePath)
@@ -42,7 +58,7 @@ void FifthDay::getInput(string& filePath)
             if(line.find("move") == string::npos)
                 continue;
             
-            // parsingMovements(line);
+            parsingMovements(line);
         }
     }
    
@@ -90,10 +106,10 @@ void FifthDay::parsingCrates(vector<string>& crates)
         }
         crates.erase(crates.begin());
     }
+}
+
+void FifthDay::catEndUpStacks()
+{
     for(auto& crate : mCrates)
-    {
-        for(auto& sign : crate)
-            cout<< sign<< " ";
-        cout<<endl;
-    }
+        mEndUpStacks += crate[crate.size()-1];
 }
