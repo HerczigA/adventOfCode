@@ -16,15 +16,8 @@ void FifthDay::doWork()
     int lastElement;
     for(auto& moves : mMoves)
     {
-
-        for(int i = 0; i < moves[MOVE]; i++)
-        {
-            lastElement = mCrates[moves[FROM]-1].size();
-            sign = mCrates[moves[FROM]-1][lastElement-1];
-            mCrates[moves[FROM]-1].pop_back();
-            mCrates[moves[TO]-1].push_back(sign);
-            
-        }
+        // workingCrateMover9000(moves);
+        workingCrateMover9001(moves);
     }
     catEndUpStacks();
     printResults();
@@ -84,14 +77,11 @@ void FifthDay::parsingMovements(string& movements) {
     }
     mMoves.push_back(moves);
 }
+
 void FifthDay::parsingCrates(vector<string>& crates)
 {
-
-    char openBracket = '[';
-    int signPos = 0;
     const int crateLength = 4;
     string crateLine;
-    
     reverse(crates.begin(), crates.end());
 
     while(crates.size())
@@ -112,4 +102,35 @@ void FifthDay::catEndUpStacks()
 {
     for(auto& crate : mCrates)
         mEndUpStacks += crate[crate.size()-1];
+}
+
+void FifthDay::workingCrateMover9000(vector<int>& moves)
+{
+    int lastElement;
+    char sign;
+    for(int i = 0; i < moves[MOVE]; i++)
+    {
+        lastElement = mCrates[moves[FROM]-1].size();
+        sign = mCrates[moves[FROM]-1][lastElement-1];
+        mCrates[moves[FROM]-1].pop_back();
+        mCrates[moves[TO]-1].push_back(sign);
+    }
+}
+
+void FifthDay::workingCrateMover9001(vector<int>& moves)
+{
+    int lastElement;
+    char sign;
+    vector<char> newColumnCrate;
+    
+    for(int i = 0; i < moves[MOVE]; i++)
+    {
+        lastElement = mCrates[moves[FROM]-1].size();
+        sign = mCrates[moves[FROM]-1][lastElement-1];
+        mCrates[moves[FROM]-1].pop_back();
+        newColumnCrate.push_back(sign);
+    }
+
+    reverse(newColumnCrate.begin(), newColumnCrate.end());
+    mCrates[moves[TO]-1].insert(mCrates[moves[TO]-1].end(), newColumnCrate.begin(), newColumnCrate.end());
 }
