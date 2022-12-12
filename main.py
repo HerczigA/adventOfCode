@@ -1,11 +1,11 @@
 #!/usr/bin/python
-
 import sys
-import adventUtil.createNewDay as creator
+import adventUtil.builder as builder
 
 
 if __name__ == "__main__":
 
-    generator = creator.CreateNewDay(sys.argv[1])
-    generator.createDay()
-    pass
+    buildGenerator = builder.Builder(len(sys.argv))
+    buildGenerator.run()
+    buildGenerator.createComponent()
+    
