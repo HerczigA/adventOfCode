@@ -44,6 +44,7 @@ class Days{
                     "../adventUtil/inputThirdDay.txt",
                     "../adventUtil/inputFourthDay.txt",
                     "../adventUtil/inputFifthDay.txt",
+                    "../adventUtil/inputSixthDay.txt",
                     #if USE_PROBE_FILE
                     "../adventUtil/probe.txt"
                     #endif

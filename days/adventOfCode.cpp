@@ -7,6 +7,7 @@ AdventOfCode::AdventOfCode() {
     mDaysGroup.push_back(new ThirdDay);
     mDaysGroup.push_back(new FourthDay);
     mDaysGroup.push_back(new FifthDay);
+    mDaysGroup.push_back(new SixthDay);
 }
 
 AdventOfCode::~AdventOfCode() {
@@ -23,9 +24,11 @@ void AdventOfCode::openCalendarWindows() {
     for(int day = 0; day != mDaysGroup.size(); day++)
     {
         days = mDaysGroup[day];
-        pathOfDayInput = days->getFileName(day);
-        days->getInput(pathOfDayInput);
-        days->doWork();
-
+        if(days)
+        {
+            pathOfDayInput = days->getFileName(day);
+            days->getInput(pathOfDayInput);
+            days->doWork();
+        }
     }    
 }
