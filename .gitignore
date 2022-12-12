@@ -14,3 +14,6 @@ build/*
 
 *.out
 *.app
+
+#python side:
+adventUtil/__pycache*
