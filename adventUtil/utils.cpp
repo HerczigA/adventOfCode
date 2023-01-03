@@ -1,10 +1,5 @@
 #include "./utils.h"
 
-string& Days::getFileName(int index)
-{
-    return mAdventInputs[index];
-}
-
 int Days::openInput(string& file, ifstream& inputFile)
 {   
     inputFile.open(file, ios::in);

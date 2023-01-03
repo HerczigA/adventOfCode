@@ -29,7 +29,7 @@ class Days{
             THIRD_DAY,
             FOURTH_DAY
         };
-        string& getFileName(int index);
+
         virtual void getInput(string& filePath) = 0;
         virtual void doWork() = 0;
         virtual void printResults() = 0;
@@ -38,16 +38,6 @@ class Days{
         int openInput(string &filePath, ifstream& file);
     private:
         
-        vector<string> mAdventInputs{
-                    "../adventUtil/inputFirstDay.txt",
-                    "../adventUtil/inputSecondDay.txt",
-                    "../adventUtil/inputThirdDay.txt",
-                    "../adventUtil/inputFourthDay.txt",
-                    "../adventUtil/inputFifthDay.txt",
-                    "../adventUtil/inputSixthDay.txt",
-                    #if USE_PROBE_FILE
-                    "../adventUtil/probe.txt"
-                    #endif
-        } ;      
+          
 };
 

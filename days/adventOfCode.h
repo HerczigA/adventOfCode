@@ -5,6 +5,7 @@
 #include "fourthDay.h"
 #include "fifthDay.h"
 #include "sixthDay.h"
+#include "seventhDay.h"
 
 class AdventOfCode
 {
@@ -13,5 +14,18 @@ class AdventOfCode
         ~AdventOfCode();
         void openCalendarWindows();
     private:
-        vector<Days*> mDaysGroup;
+        vector<unique_ptr<Days>> mDaysGroup;
+        string& getFileName(int index);
+        vector<string> mAdventInputs{
+                    "../adventUtil/inputFirstDay.txt",
+                    "../adventUtil/inputSecondDay.txt",
+                    "../adventUtil/inputThirdDay.txt",
+                    "../adventUtil/inputFourthDay.txt",
+                    "../adventUtil/inputFifthDay.txt",
+                    "../adventUtil/inputSixthDay.txt",
+                    "../adventUtil/inputSeventhDay.txt",
+                    #if USE_PROBE_FILE
+                    "../adventUtil/probe.txt"
+                    #endif
+        };
 };

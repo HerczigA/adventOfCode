@@ -3,6 +3,11 @@ cmake_minimum_required(VERSION 3.6)
 set(PROJECT "ADVENT_OF_CODE")
 project(${PROJECT})
 
+message(${CMAKE_CURRENT_SOURCE_DIR})
+set(CMAKE_BINARY_DIR ${CMAKE_CURRENT_SOURCE_DIR}/build)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build)
+
 file(GLOB_RECURSE SOURCES adventUtil/*.cpp
     days/*.cpp 
     main.cpp
@@ -25,5 +30,6 @@ target_include_directories(${PROJECT} PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/days/fourthDay
     ${CMAKE_CURRENT_SOURCE_DIR}/days/fifthDay
     ${CMAKE_CURRENT_SOURCE_DIR}/days/sixthDay
+    ${CMAKE_CURRENT_SOURCE_DIR}/days/seventhDay
     ${CMAKE_CURRENT_SOURCE_DIR}/adventUtil
 )
