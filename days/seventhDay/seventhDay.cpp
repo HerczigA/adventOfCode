@@ -1,7 +1,10 @@
 #include "seventhDay.h"
 
+// 1185273 wrong
+// 573235 too low
+// 1629598 too much
 SeventhDay::SeventhDay()
-    : mSize(0)
+    : mTotalSize(0)
 {
     mPtrFs = nullptr;
     mNext = nullptr; 
@@ -10,7 +13,30 @@ SeventhDay::SeventhDay()
 void SeventhDay::doWork()
 {
     
-    cout<< "Do work..." << endl;
+    // int idx, mainFolderIdx = 0;
+    // for(auto it = mPtrFs->dirNames.begin(); it != mPtrFs->dirNames.end(); it++)
+    // {
+    //     mNext = mPtrFs->subDirs[mainFolderIdx]->subDirs ?  *mPtrFs->subDirs[mainFolderIdx]->subDirs : mPtrFs->subDirs[mainFolderIdx];
+        
+    //     while(mNext != mPtrFs->subDirs[mainFolderIdx])
+    //     {
+    //         idx = 0;
+    //         for(auto dirIt = mNext->head->dirNames.begin(); dirIt != mNext->head->dirNames.end(); dirIt++)
+    //         {
+    //             if(mNext->head->subDirs[idx]->subDirs)
+    //                 walk(*mNext->head->subDirs[idx]->subDirs);
+    //             // else
+    //             aggregateFileSize(mNext->head->subDirs[idx]);
+    //             idx++;
+    //         }
+    //         mNext = mNext->head;   
+    //     }
+    //     mainFolderIdx++;
+    //     aggregateFileSize(mNext);
+    // }
+
+    // clean();
+
 }
 
 void SeventhDay::printResults()
@@ -28,86 +54,60 @@ void SeventhDay::getInput(string& filePath)
     if(result)
         return;
 
-    while(getline(inputFile, line)) 
-    {
-        cout << line << endl;
-        if(line.find(mCdCmd) != string::npos)
-        {
-            if(line == "$ cd ..")
-                mNext = mNext->head;
-            else if(line.find( "$ cd") != string::npos)
-            {
-                if(stepInto(line))    
-                {
-                    clean();
-                    inputFile.close();
-                    return;
-                }
-            }
-        }
-        else if(isdigit(line[0]))
-            parseFile(line);
-        else //if(line.find("dir") != string::npos)
-            parseDir(line);
-            
-            
-    }
-    inputFile.close();
-    clean();
-}
-        
-
-int SeventhDay::stepInto(string& line)
-{
-    string newDir = line.substr(DIR_LENGTH_CUTOFF+1);
-    if(line == "$ cd qlnwhq")
-        cout << "megjottunk" << endl;
-    if(mPtrFs)
-    {
-        DirectoryScope *subDir = new DirectoryScope(newDir);
-        if(subDir)
-        {   
-            if(!mNext->subDirs)
-            {
-                mNext->subDirs = new DirectoryScope*[mNext->dirNames.size()];
-                if(!mNext->subDirs)
-                {
-                    cout << "Error: no memory for allocate new DirectoryScope type" <<endl;
-                    delete subDir;
-                    return 1;
-                }
-                // *mNext->subDirs[mNext->actualSubDirIndex++] = *subDir;    
-            }
-            // else
-            // *mNext->subDirs[mNext->actualSubDirIndex++] = *subDir;
-            
-            mNext->subDirs[mNext->actualSubDirIndex++] = subDir;
-            subDir->head = mNext;
-            subDir->name = newDir;
-            mNext = subDir;
-            
-        }
-    }
-    else
-    {
-        mPtrFs = new DirectoryScope(newDir);
-        if(!mPtrFs)
-            return 1;
-        mNext = mPtrFs;
-        mPtrFs->name = newDir;
-    }
-    return 0;
+    createOs(line, inputFile);
 }
 
+// int SeventhDay::createDir(string& line)
+// {
+//     string newDir = line.substr(DIR_LENGTH_CUTOFF+1);
+//     if(mPtrFs)
+//     {
+//         DirectoryScope *subDir = new DirectoryScope(newDir);
+//         if(subDir)
+//         {   
+//             if(!mNext->subDirs)
+//             {
+//                 mNext->subDirs = new DirectoryScope*[mNext->dirNames.size()];
+//                 if(!mNext->subDirs)
+//                 {
+//                     cout << "Error: no memory for allocate new DirectoryScope type" <<endl;
+//                     delete subDir;
+//                     return 1;
+//                 }
+//             }
+//             mNext->subDirs[mNext->actualSubDirIndex++] = subDir;
+//             subDir->head = mNext;
+//             subDir->name = newDir;
+//             mNext = subDir;
+//         }
+//     }
+//     else
+//     {
+//         mPtrFs = new DirectoryScope(newDir);
+//         if(!mPtrFs)
+//             return 1;
+//         mNext = mPtrFs;
+//         mPtrFs->name = newDir;
+//     }
+//     return 0;
+// }
 
-bool SeventhDay::checkSize()
-{
-    if( mSize <= minSize)
-        // mAllSizes.emplace_back(mSize);
-        mAllSizes.push_back(mSize);
-    mSize = 0;
-    return true;
-}
+// void SeventhDay::aggregateFileSize(DirectoryScope *dir)
+// {
+//     if(!dir)
+//         return;
+
+//     uint32_t dirSize = dir->subDirs ? dir->dirSize + dir->subDirs[0]->dirSize : dir->dirSize;
+
+//     if(dirSize <= minSize)
+//     {
+//         mAllSizes.push_back(dirSize);
+//         mTotalSize += dirSize;
+//     }
+//     else if(dirSize <= minSize)
+//         mTotalSize += dirSize;
+
+// }
 
 uint32_t SeventhDay::sumOfDirectoriesAtMost100000()
 {
@@ -119,9 +119,8 @@ uint32_t SeventhDay::sumOfDirectoriesAtMost100000()
 
 void SeventhDay::parseFile(string & line)
 {
-    uint32_t size = atoi(line.c_str());
-    mNext->fileSize += size;
-    
+    uint32_t dirSize = atoi(line.c_str());
+    mNext->dirSize += dirSize; 
 }
 
 void SeventhDay::parseDir(string & line)
@@ -130,61 +129,95 @@ void SeventhDay::parseDir(string & line)
     mNext->dirNames.insert(dirName);
 }
 
-void SeventhDay::walk()
-{
+// void SeventhDay::walk(DirectoryScope *dir)
+// {
+//     int idx = 0;
+//     for(auto it = dir->head->dirNames.begin() ; it != dir->head->dirNames.end(); it++)
+//     {
+//         // cout << "check dir->head->subDirs[" << idx << "]->: " << *dir->head->subDirs[idx]->subDirs << endl;
+//         if(dir->head->subDirs[idx]->subDirs)
+//             walk(*dir->head->subDirs[idx]->subDirs);
+//         aggregateFileSize(dir->head->subDirs[idx]);
+        
+//         idx++;
+//     }
+//     dir = dir->head;
+// }
 
-}
+// void SeventhDay::cleanBranches(DirectoryScope *dir)
+// {
+//     int idx = 0;
+//     for(auto it = dir->head->dirNames.begin() ; it != dir->head->dirNames.end(); it++)
+//     {
+//         if(dir->head->subDirs[idx]->subDirs)
+//             cleanBranches(*dir->head->subDirs[idx]->subDirs);
+//         delete dir->head->subDirs[idx];
+//         dir->head->subDirs[idx++] = nullptr;
+//     }
+//     dir = dir->head;
+// }
 
-void SeventhDay::walkClean(DirectoryScope *dir)
-{
-    int idx = 0;
-    for(auto it = dir->head->dirNames.begin() ; it != dir->head->dirNames.end(); it++)
-    {
-        if(*it == "fwfhnbc")
-            cout<< *it <<endl;
-        cout << "deleting folder " << *it <<endl;
-        if(dir->head->subDirs[idx]->subDirs)
-            walkClean(*dir->head->subDirs[idx]->subDirs);
-        delete dir->head->subDirs[idx];
-        cout << "deleted folder " << *it <<endl;
-        dir->head->subDirs[idx++] = nullptr;
-    }
-    dir = dir->head;
-}
-
-void SeventhDay::clean()
-{
+// void SeventhDay::clean()
+// {
     
-    cout<< "cleaning" <<endl;
-    int idx, mainFolderIdx = 0;
-    for(auto it = mPtrFs->dirNames.begin(); it != mPtrFs->dirNames.end(); it++)
+//     uint64_t szar = 0;
+    
+//     cout<< "all amount "<< sumOfDirectoriesAtMost100000() <<endl;    
+//     cout<< "Cleaning..." <<endl;
+//     int idx, mainFolderIdx = 0;
+//     for(auto it = mPtrFs->dirNames.begin(); it != mPtrFs->dirNames.end(); it++)
+//     {
+//         mNext = mPtrFs->subDirs[mainFolderIdx];
+//         if(mNext->subDirs)
+//             mNext=*mNext->subDirs;
+
+//         while(mNext != mPtrFs->subDirs[mainFolderIdx])
+//         {
+//             idx = 0; 
+//             for(auto dirIt = mNext->head->dirNames.begin(); dirIt != mNext->head->dirNames.end(); dirIt++)
+//             {
+//                 if(mNext->head->subDirs[idx]->subDirs)
+//                     cleanBranches(*mNext->head->subDirs[idx]->subDirs);
+//                 if(mNext->head->subDirs[idx])
+//                     delete  mNext->head->subDirs[idx];
+//                 mNext->head->subDirs[idx++] = nullptr;
+//             }
+//             mNext = mNext->head;   
+//         }
+        
+//         delete mPtrFs->subDirs[mainFolderIdx];
+//         mPtrFs->subDirs[mainFolderIdx++] = nullptr;
+//     }
+
+//     delete[] mPtrFs->subDirs;
+//     mPtrFs->subDirs = nullptr;
+// }
+
+
+void SeventhDay::createOs(string & line, ifstream & inputFile)
+{
+    while(getline(inputFile, line))
     {
-        
-        mNext = mPtrFs->subDirs[mainFolderIdx];
-        if(mNext->subDirs)
-            mNext=*mNext->subDirs;
-
-        while(mNext != mPtrFs->subDirs[mainFolderIdx])
+        if(line.find(mCdCmd) != string::npos)
         {
-            idx = 0; 
-            for(auto dirIt = mNext->head->dirNames.begin(); dirIt != mNext->head->dirNames.end(); dirIt++)
+            if(line == "$ cd ..")
+                {
+                    // mNext = mNext->head;
+                }
+            else if(line.find( "$ cd") != string::npos)
             {
-                cout << "deleting folder " << *dirIt <<endl;
-                if(mNext->head->subDirs[idx]->subDirs)
-                    walkClean(*mNext->head->subDirs[idx]->subDirs);
-                if(mNext->head->subDirs[idx])
-                    delete  mNext->head->subDirs[idx];
-                mNext->head->subDirs[idx++] = nullptr;
-                cout << "deleted folder " << *dirIt <<endl;
+                // if(createDir(line))    
+                // {
+                //     clean();
+                //     inputFile.close();
+                //     return;
+                // }
             }
-            mNext = mNext->head;   
         }
-        
-        cout << "deleting main folders " << *it <<endl;
-        delete mPtrFs->subDirs[mainFolderIdx];
-        mPtrFs->subDirs[mainFolderIdx++] = nullptr;
+        else if(isdigit(line[0]))
+            parseFile(line);
+        else
+            parseDir(line);
     }
-
-    delete[] mPtrFs->subDirs;
-    mPtrFs->subDirs = nullptr;
+    inputFile.close();
 }
