@@ -20,6 +20,13 @@ file(GLOB_RECURSE HEADERS adventUtil/*.h
 message(STATUS "These are the sources :" ${SOURCES})
 message(STATUS "And headers: " ${HEADERS})
 
+if( CMAKE_BUILD_TYPE STREQUAL "Release")
+    message(STATUS "Building release....")    
+    add_compile_definitions(RELEASE_AOC)
+else()
+    message(STATUS "Building debug....")    
+endif()
+
 add_executable(${PROJECT} ${SOURCES} ${HEADERS})
 
 target_include_directories(${PROJECT} PUBLIC

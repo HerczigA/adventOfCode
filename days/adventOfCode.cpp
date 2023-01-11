@@ -19,12 +19,12 @@ AdventOfCode::~AdventOfCode() {
      
 }
 void AdventOfCode::openCalendarWindows() {
-    // unique_ptr<Days> days;
-    Days* days;
+    unique_ptr<Days> days;
+    
     string pathOfDayInput;
     for(int day = 0; day != mDaysGroup.size(); day++)
     {
-        days = mDaysGroup[day].get();
+        days = move(mDaysGroup.at(day));
         if(days)
         {
             pathOfDayInput = getFileName(day);
