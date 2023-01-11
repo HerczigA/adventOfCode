@@ -4,9 +4,6 @@ set(PROJECT "ADVENT_OF_CODE")
 project(${PROJECT})
 
 message(${CMAKE_CURRENT_SOURCE_DIR})
-set(CMAKE_BINARY_DIR ${CMAKE_CURRENT_SOURCE_DIR}/build)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build)
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build)
 
 file(GLOB_RECURSE SOURCES adventUtil/*.cpp
     days/*.cpp 
@@ -21,12 +18,17 @@ message(STATUS "These are the sources :" ${SOURCES})
 message(STATUS "And headers: " ${HEADERS})
 
 if( CMAKE_BUILD_TYPE STREQUAL "Release")
-    message(STATUS "Building release....")    
+    message(STATUS "Building release....")
     add_compile_definitions(RELEASE_AOC)
+    set(BUILD_DIR ${CMAKE_CURRENT_SOURCE_DIR}/build)
 else()
-    message(STATUS "Building debug....")    
+    message(STATUS "Building debug....")
+    set(BUILD_DIR ${CMAKE_CURRENT_SOURCE_DIR}/build_debug)
 endif()
 
+set(CMAKE_BINARY_DIR ${BUILD_DIR})
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${BUILD_DIR})
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${BUILD_DIR})
 add_executable(${PROJECT} ${SOURCES} ${HEADERS})
 
 target_include_directories(${PROJECT} PUBLIC
