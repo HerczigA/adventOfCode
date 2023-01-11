@@ -20,20 +20,18 @@ class Builder():
         self.removeEverything = "rm -r " + self.dirBuild + " " + self.dirDebug
         parser = arg.ArgumentParser(prog = "Builder python", description="""Builder
                                          script for building advent of code and generating new components""")
-        # parser.add_argument("-h", "--help", action="store_true")
         parser.add_argument("-c", "--cmake", action="store_true")
         parser.add_argument("-b", "--build", action="store_true")
         parser.add_argument("-d", "--debug", action="store_true")
         parser.add_argument("-r", "--remove", action="store_true")
+        parser.add_argument("-D", "--day", type=int, choices=range(1, 26))
         parser.add_argument("-mf", "--makefiles", type=str, help="Component for buildin new *>h and *.cpp component")
         self.args = parser.parse_args()
         pass
     
     def runCmake(self, cmd, directory):
-        debug = " -DCMAKE_BUILD_TYPE=Debug "
-        if "debug" in directory:
-            cmd = cmd + debug
-        cmd = cmd + " -B" + directory + " ."
+        buildType = ' -DCMAKE_BUILD_TYPE="Release"' if directory == "build" else ' -DCMAKE_BUILD_TYPE="Debug"'
+        cmd = cmd + ' -B' + directory + buildType + ' .'
         os.system(cmd)
 
     def building(self):
@@ -53,33 +51,6 @@ class Builder():
     def run(self):
         
         if self.argNum == self.arg_counter:
-            print("""\n
-            Use <python ./build --help> or
-            <python ./build -h> to get some
-            help about the building script 
-            """)
-            exit()
-        elif self.args.debug:
-            self.directory = self.dirDebug
-                
-        elif self.args.remove:
-            os.system(self.removeEverything)
-            if self.args.cmake:
-                self.runCmake(self.cmd, self.directory)
-            if self.args.build:
-                self.building()
-                
-        elif self.args.cmake:
-            self.runCmake(self.cmd, self.directory)
-            
-            if self.args.build:
-                self.building()
-                
-        elif self.args.build:
-            self.building()
-            
-            
-        elif self.args.help:
             print("""
             *********************Build.py********************
 
@@ -101,18 +72,43 @@ class Builder():
             files, then the python script try to compile the 
             project with ninja.
             
-            -r remove all the unnecessary build 
+            -r -> remove all the unnecessary build 
             files, executable files  and directory(CMakeFiles)
 
-            -d you can build debug version of the software.
+            -d -> you can build debug version of the software.
+            
+            -D -> It is required an integer number after -D.
+            It will generate new day component in the project
 
-            -C -> choose to cross-compile 
+            -mf -> instead of ninja it will use unix Makefile for building
             """)
-            # exit()
+            exit()
+        
+                
+        elif self.args.remove:
+            os.system(self.removeEverything)
+            if self.args.cmake:
+                if self.args.debug:
+                    self.directory = self.dirDebug
+                self.runCmake(self.cmd, self.directory)
+            if self.args.build:
+                self.building()
+                
+        elif self.args.cmake:
+            if self.args.debug:
+                self.directory = self.dirDebug
+            self.runCmake(self.cmd, self.directory)
+            
+            if self.args.build:
+                self.building()
+                
+        elif self.args.build:
+            self.building()
+            
             
     def createComponent(self):
-        if self.args.makefiles:
-            self.componentGenerator= CreateNewDay(self.args.makefiles)
+        if self.args.day:
+            self.componentGenerator= CreateNewDay(self.args.day)
             self.componentGenerator.createDay()
             
 
