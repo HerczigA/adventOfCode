@@ -1,24 +1,27 @@
 #include "seventhDay.h"
 
+#ifndef ROOT_PATH
+    #define ROOT_PATH "/home"
+#endif
+
 SeventhDay::SeventhDay()
     : mTotalSize(0)
 {
-    mOs.insert({"/home", 0});
+    mOs.insert({ROOT_PATH, 0});
 }
 
 void SeventhDay::doWork()
 {
-    for(auto & it : mOs)
-    {
-        if(it.second < minSize)
-            mTotalSize += it.second;
-    }
+    collectTotalSizeUnder100000();
+    collectDirectoriesForGetFreeSpace();
     printResults();
 }
 
 void SeventhDay::printResults()
 {
+    auto it = mAvailableDirs.begin();
     cout<< "Results of sum of at most 100000 size of directories " << mTotalSize  << endl;
+    cout<< "Smallest dir for freeing up some space is  " << *it  << endl;
 }
 
 void SeventhDay::getInput(string& filePath)
@@ -59,12 +62,34 @@ void SeventhDay::stepBack()
     //lambda used just for practicing however it can be solved with count()
     uint numberOfSlash = count_if(mPath.begin(), mPath.end(), [&](char c) {return c=='/';});
     if(numberOfSlash == 1)
-        mPath = "/home";
+        mPath = ROOT_PATH;
     else{
         uint pos = mPath.rfind("/");
         mPath = mPath.substr(0, pos);
     }
     
+}
+
+void SeventhDay::collectTotalSizeUnder100000()
+{
+    for(auto & it : mOs)
+    {
+        if(it.second < minSize)
+            mTotalSize += it.second;
+    }
+}
+
+void SeventhDay::collectDirectoriesForGetFreeSpace()
+{
+    auto osIt = mOs.find(ROOT_PATH);
+    const uint32_t availableFreeSpace = totalSize - osIt->second;
+    const uint32_t requiredFreeSpace = updateSize - availableFreeSpace;
+    for(auto & it : mOs)
+    {
+        if(requiredFreeSpace <= it.second )
+            mAvailableDirs.insert(it.second);
+    }
+
 }
 
 void SeventhDay::createOs(string & line, ifstream & inputFile)
