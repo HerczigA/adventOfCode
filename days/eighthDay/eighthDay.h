@@ -21,17 +21,17 @@ class EighthDay : public Days
     private:
         void printResults() override;
         void countEdges();
-        void checkAxis(map<uint, vector<uint>> & visibleTreeIndexes, int &isFront);
-        void iterateFrontWay(vector<vector<uint>>::iterator & rowIt, vector<uint> &visibleTreeCoordinate);
-        void iterateBackWay(vector<vector<uint>>::iterator & rowIt, map<uint, vector<uint>> & visibleTreeIndexes, uint &rowIndex);
+        void checkAxis(map<int, vector<int>> & visibleTreeIndexes, int &isFront);
+        void iterateFrontWay(vector<vector<int>>::iterator & rowIt, vector<int> &visibleTreeCoordinate);
+        void iterateBackWay(vector<vector<int>>::iterator & rowIt, map<int, vector<int>> & visibleTreeIndexes, int &rowIndex);
         void collectIndexes();
         void turnForest();
         void compareTreeIndexes();
         
-        vector<vector<uint>> mForest;
-        uint mVisibleTrees;
-        map<uint, vector<uint>> mVisibleTreeIndex;
-        map<uint, vector<uint>> mRotatedVisibleTreeIndex;
+        vector<vector<int>> mForest;
+        int mVisibleTrees;
+        map<int, vector<int>> mVisibleTreeIndex;
+        map<int, vector<int>> mRotatedVisibleTreeIndex;
     
 };
         

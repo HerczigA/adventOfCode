@@ -1,8 +1,8 @@
 #include "eighthDay.h"
 
-const uint minSize = 0;
-const uint maxSize = 9;
-const uint asciiTable = 48;
+const int minSize = 0;
+const int maxSize = 9;
+const int asciiTable = 48;
 
 // 1036 is too low
 
@@ -15,11 +15,11 @@ EighthDay::EighthDay()
 void EighthDay::doWork()
 {
     countEdges();
-    for(uint axis = Axis::X; axis <= Axis::Y; axis++)
+    for(int axis = Axis::X; axis <= Axis::Y; axis++)
     {
         for(int view = Direction::front; view <= Direction::reverse; view++)
         {
-            map<uint, vector<uint>> & treeIndexes = axis == Axis::X ? mVisibleTreeIndex : mRotatedVisibleTreeIndex;
+            map<int, vector<int>> & treeIndexes = axis == Axis::X ? mVisibleTreeIndex : mRotatedVisibleTreeIndex;
             checkAxis(treeIndexes, view);
         }
         turnForest();
@@ -45,12 +45,12 @@ void EighthDay::getInput(string& filePath)
 
     while(getline(inputFile, line)) 
     {
-        vector<uint> row;
+        vector<int> row;
         auto it = line.begin();
         
-        for(uint i = 0; i < line.length() -1; i++)
+        for(int i = 0; i < line.length() -1; i++)
         {
-            uint height = static_cast<uint>(line[i]) - asciiTable;
+            int height = static_cast<int>(line[i]) - asciiTable;
             row.push_back(height);
         }
         mForest.push_back(row);
@@ -61,20 +61,20 @@ void EighthDay::getInput(string& filePath)
 void EighthDay::countEdges()
 {
     auto it = mForest.begin();
-    uint xLen = it->size();
-    uint yLen = mForest.size()-2;
+    int xLen = it->size();
+    int yLen = mForest.size()-2;
     mVisibleTrees = 2*(xLen +yLen);
 }
 
-void EighthDay::checkAxis(map<uint, vector<uint>> & visibleTreeIndexes, int &isFront)
+void EighthDay::checkAxis(map<int, vector<int>> & visibleTreeIndexes, int &isFront)
 {
-    uint rowIndex = 1;
+    int rowIndex = 1;
     auto rowIt = next(mForest.begin());
     auto beforeEndIt = next(mForest.begin(), mForest[0].size()-1);
     while(rowIt != beforeEndIt)
     {
         
-        vector<uint> visibleTreeCoordinate;
+        vector<int> visibleTreeCoordinate;
         if(isFront == Direction::front)
             iterateFrontWay(rowIt, visibleTreeCoordinate);
         else
@@ -86,10 +86,10 @@ void EighthDay::checkAxis(map<uint, vector<uint>> & visibleTreeIndexes, int &isF
     }
 }
 
-void EighthDay::iterateFrontWay(vector<vector<uint>>::iterator & rowIt, vector<uint> &visibleTreeCoordinate)
+void EighthDay::iterateFrontWay(vector<vector<int>>::iterator & rowIt, vector<int> &visibleTreeCoordinate)
 {
-    uint highestTree = rowIt->at(0);
-    for(uint idx = 1; idx < rowIt->size()-1; idx++)
+    int highestTree = rowIt->at(0);
+    for(int idx = 1; idx < rowIt->size()-1; idx++)
     {
         if(highestTree < rowIt->at(idx))
         {
@@ -97,23 +97,30 @@ void EighthDay::iterateFrontWay(vector<vector<uint>>::iterator & rowIt, vector<u
             visibleTreeCoordinate.push_back(idx);
         }
         if(highestTree == maxSize)
-                break;
+            break;
     }
+    if(visibleTreeCoordinate.size() ==0)
+        visibleTreeCoordinate.push_back(-1);
 }
 
-void EighthDay::iterateBackWay(vector<vector<uint>>::iterator & rowIt, map<uint, vector<uint>> & visibleTreeIndexes, uint &rowIndex)
+void EighthDay::iterateBackWay(vector<vector<int>>::iterator & rowIt, map<int, vector<int>> & visibleTreeIndexes, int &rowIndex)
 {
-    uint highestTree = rowIt->at(rowIt->size()-1);
-    for(uint idx = rowIt->size()-2; 0 < idx; idx--)
+    int highestTree = rowIt->at(rowIt->size()-1);
+    for(int idx = rowIt->size()-2; 0 < idx; idx--)
     {
         if(highestTree < rowIt->at(idx))
         {
-            uint potentialTreeIdx = rowIt->size() - idx -1;
-            if(count(visibleTreeIndexes[rowIndex].begin(), visibleTreeIndexes[rowIndex].end(), potentialTreeIdx) == 0)
+
+            if(count(visibleTreeIndexes[rowIndex].begin(), visibleTreeIndexes[rowIndex].end(), idx) == 0)
             {
-                highestTree = rowIt->at(idx);
-                visibleTreeIndexes[rowIndex].push_back(potentialTreeIdx);
+                auto it = find(visibleTreeIndexes[rowIndex].begin(), visibleTreeIndexes[rowIndex].end(), -1);
+                if(it != visibleTreeIndexes[rowIndex].end())
+                    visibleTreeIndexes[rowIndex].erase(it);
+                visibleTreeIndexes[rowIndex].push_back(idx);
             }
+             
+            
+            highestTree = rowIt->at(idx);
         }
         if(highestTree == maxSize)
             break;
@@ -130,10 +137,11 @@ void EighthDay::collectIndexes()
 
 void EighthDay::turnForest()
 {
-    vector<vector<uint>> rotatedForrest;
+    // add some try catch logic 
+    vector<vector<int>> rotatedForrest;
     for(int i = mForest[0].size()-1; 0 <= i; i--)
     {
-        vector<uint> newRow;
+        vector<int> newRow;
         for(auto it : mForest)
             newRow.push_back(it.at(i));
         rotatedForrest.push_back(newRow);
@@ -143,6 +151,21 @@ void EighthDay::turnForest()
 
 void EighthDay::compareTreeIndexes()
 {
-    // TO DO compare logic
+    
+        // for(auto colIt : mRotatedVisibleTreeIndex)
+        // {
+            for(int i = 1; i <= mRotatedVisibleTreeIndex.size(); i++)
+            {
+                for(int j = 0; j < mRotatedVisibleTreeIndex[i].size(); j++)
+                {
+                    int idx = mRotatedVisibleTreeIndex[i][j];
+                    const int pos = mForest[0].size()-1 -i;
+                    if(find(mVisibleTreeIndex[idx].begin(), mVisibleTreeIndex[idx].end(), pos) == mVisibleTreeIndex[idx].end()) //mRotatedVisibleTreeIndex
+                        mVisibleTreeIndex[idx].push_back(idx);
+                }
+            }
+            
+        // }
+    
     collectIndexes();
 }
