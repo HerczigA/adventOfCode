@@ -5,6 +5,7 @@ const int maxSize = 9;
 const int asciiTable = 48;
 
 // 1036 is too low
+// 1829
 
 EighthDay::EighthDay()
     : mVisibleTrees(0)
@@ -15,16 +16,12 @@ EighthDay::EighthDay()
 void EighthDay::doWork()
 {
     countEdges();
-    for(int axis = Axis::X; axis <= Axis::Y; axis++)
+    for( int axes = Axis::X; axes <= Axis::Y ; axes++)
     {
-        for(int view = Direction::front; view <= Direction::reverse; view++)
-        {
-            map<int, vector<int>> & treeIndexes = axis == Axis::X ? mVisibleTreeIndex : mRotatedVisibleTreeIndex;
-            checkAxis(treeIndexes, view);
-        }
+        checkAxises();
         turnForest();
     }
-    compareTreeIndexes();
+    collectIndexes();
     printResults();
 }
 
@@ -45,13 +42,14 @@ void EighthDay::getInput(string& filePath)
 
     while(getline(inputFile, line)) 
     {
-        vector<int> row;
+        vector<TreeStorage> row;
         auto it = line.begin();
         
         for(int i = 0; i < line.length() -1; i++)
         {
             int height = static_cast<int>(line[i]) - asciiTable;
-            row.push_back(height);
+            TreeStorage tree(height);
+            row.push_back(tree);
         }
         mForest.push_back(row);
     }
@@ -66,106 +64,79 @@ void EighthDay::countEdges()
     mVisibleTrees = 2*(xLen +yLen);
 }
 
-void EighthDay::checkAxis(map<int, vector<int>> & visibleTreeIndexes, int &isFront)
+
+void EighthDay::checkAxises()
 {
-    int rowIndex = 1;
-    auto rowIt = next(mForest.begin());
-    auto beforeEndIt = next(mForest.begin(), mForest[0].size()-1);
-    while(rowIt != beforeEndIt)
-    {
-        
-        vector<int> visibleTreeCoordinate;
-        if(isFront == Direction::front)
-            iterateFrontWay(rowIt, visibleTreeCoordinate);
-        else
-            iterateBackWay(rowIt, visibleTreeIndexes, rowIndex);
-        
-        visibleTreeIndexes.insert({rowIndex, visibleTreeCoordinate});
-        rowIt++;
-        rowIndex++;
-    }
+    iterateFrontWay();
+    iterateBackWay();
 }
 
-void EighthDay::iterateFrontWay(vector<vector<int>>::iterator & rowIt, vector<int> &visibleTreeCoordinate)
-{
-    int highestTree = rowIt->at(0);
-    for(int idx = 1; idx < rowIt->size()-1; idx++)
-    {
-        if(highestTree < rowIt->at(idx))
-        {
-            highestTree = rowIt->at(idx);
-            visibleTreeCoordinate.push_back(idx);
-        }
-        if(highestTree == maxSize)
-            break;
-    }
-    if(visibleTreeCoordinate.size() ==0)
-        visibleTreeCoordinate.push_back(-1);
-}
 
-void EighthDay::iterateBackWay(vector<vector<int>>::iterator & rowIt, map<int, vector<int>> & visibleTreeIndexes, int &rowIndex)
+void EighthDay::iterateFrontWay()
 {
-    int highestTree = rowIt->at(rowIt->size()-1);
-    for(int idx = rowIt->size()-2; 0 < idx; idx--)
+    int highestTree;
+    for(int i = 1; i < mForest.size() -1; i++ )
     {
-        if(highestTree < rowIt->at(idx))
+        highestTree = mForest[i][0].treeHeight;
+        for( int j = 1; j <mForest[i].size() -1; j++)
         {
-
-            if(count(visibleTreeIndexes[rowIndex].begin(), visibleTreeIndexes[rowIndex].end(), idx) == 0)
+            if(highestTree < mForest[i][j].treeHeight)
             {
-                auto it = find(visibleTreeIndexes[rowIndex].begin(), visibleTreeIndexes[rowIndex].end(), -1);
-                if(it != visibleTreeIndexes[rowIndex].end())
-                    visibleTreeIndexes[rowIndex].erase(it);
-                visibleTreeIndexes[rowIndex].push_back(idx);
+                highestTree = mForest[i][j].treeHeight;
+                if(mForest[i][j].isHeighest == false)
+                    mForest[i][j].isHeighest = true;
             }
-             
-            
-            highestTree = rowIt->at(idx);
+            if(highestTree == maxSize)
+                break;
         }
-        if(highestTree == maxSize)
-            break;
+    }
+}
+
+void EighthDay::iterateBackWay()
+{
+    int highestTree;
+    for(int i = 1; i < mForest.size() -1; i++ )
+    {
+        highestTree = mForest[i][mForest[i].size()-1].treeHeight;
+        for( int j = mForest[i].size() -2; 0 < j; j--)
+        {
+            if(highestTree < mForest[i][j].treeHeight)
+            {
+                highestTree = mForest[i][j].treeHeight;
+                if(mForest[i][j].isHeighest == false)
+                    mForest[i][j].isHeighest = true;
+            }
+            if(highestTree == maxSize)
+                break;
+        }
+        
     }
     
 }
 
 void EighthDay::collectIndexes()
 {
-    for(auto it : mVisibleTreeIndex)
-        mVisibleTrees += it.second.size();
-    
+    for(int i = 1; i < mForest.size() -1; i++ )
+    {
+        for( int j = mForest[i].size() -2; 0 < j; j--)
+        {
+            if(mForest[i][j].isHeighest == true)
+                mVisibleTrees++;
+        }
+    }
 }
 
 void EighthDay::turnForest()
 {
     // add some try catch logic 
-    vector<vector<int>> rotatedForrest;
+    vector<vector<TreeStorage>> rotatedForrest;
     for(int i = mForest[0].size()-1; 0 <= i; i--)
     {
-        vector<int> newRow;
+        vector<TreeStorage> newRow;
         for(auto it : mForest)
-            newRow.push_back(it.at(i));
+            newRow.push_back(TreeStorage(it.at(i).treeHeight, it.at(i).isHeighest) );
+
         rotatedForrest.push_back(newRow);
     }
     mForest = rotatedForrest;
-}
-
-void EighthDay::compareTreeIndexes()
-{
-    
-        // for(auto colIt : mRotatedVisibleTreeIndex)
-        // {
-            for(int i = 1; i <= mRotatedVisibleTreeIndex.size(); i++)
-            {
-                for(int j = 0; j < mRotatedVisibleTreeIndex[i].size(); j++)
-                {
-                    int idx = mRotatedVisibleTreeIndex[i][j];
-                    const int pos = mForest[0].size()-1 -i;
-                    if(find(mVisibleTreeIndex[idx].begin(), mVisibleTreeIndex[idx].end(), pos) == mVisibleTreeIndex[idx].end()) //mRotatedVisibleTreeIndex
-                        mVisibleTreeIndex[idx].push_back(idx);
-                }
-            }
-            
-        // }
-    
-    collectIndexes();
 }

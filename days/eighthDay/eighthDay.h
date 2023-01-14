@@ -9,10 +9,23 @@ class EighthDay : public Days
           X,
           Y
         };
-        enum Direction
+        
+        struct TreeStorage
         {
-          front,
-          reverse
+            int treeHeight;
+            bool isHeighest;
+            TreeStorage(int height) 
+            : treeHeight(height)
+            , isHeighest(false)
+            {
+
+            }
+            TreeStorage(int height, bool heighest) 
+            : treeHeight(height)
+            , isHeighest(heighest)
+            {
+            }
+        
         };
 
         EighthDay();
@@ -21,17 +34,15 @@ class EighthDay : public Days
     private:
         void printResults() override;
         void countEdges();
-        void checkAxis(map<int, vector<int>> & visibleTreeIndexes, int &isFront);
-        void iterateFrontWay(vector<vector<int>>::iterator & rowIt, vector<int> &visibleTreeCoordinate);
-        void iterateBackWay(vector<vector<int>>::iterator & rowIt, map<int, vector<int>> & visibleTreeIndexes, int &rowIndex);
+        void checkAxises();
+        void iterateFrontWay();
+        void iterateBackWay();
         void collectIndexes();
         void turnForest();
-        void compareTreeIndexes();
         
-        vector<vector<int>> mForest;
+        vector<vector<TreeStorage>> mForest;
         int mVisibleTrees;
-        map<int, vector<int>> mVisibleTreeIndex;
-        map<int, vector<int>> mRotatedVisibleTreeIndex;
+        
     
 };
         
