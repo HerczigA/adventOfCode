@@ -7,6 +7,7 @@
 #include "sixthDay.h"
 #include "seventhDay.h"
 #include "eighthDay.h"
+#include "ninthDay.h"
 
 #ifdef RELEASE_AOC
     const string inputPath="../adventUtil/";
@@ -33,6 +34,7 @@ class AdventOfCode
                     inputPath + "inputSixthDay.txt",
                     inputPath + "inputSeventhDay.txt",
                     inputPath + "inputEighthDay.txt",
+					inputPath + "inputNinthDay.txt",
                     #if USE_PROBE_FILE
                     inputPath + "/probe.txt"
                     #endif

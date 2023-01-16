@@ -10,6 +10,7 @@ AdventOfCode::AdventOfCode() {
     mDaysGroup.push_back(make_unique<SixthDay>());
     mDaysGroup.push_back(make_unique<SeventhDay>());
     mDaysGroup.push_back(make_unique<EighthDay>());
+	mDaysGroup.push_back(make_unique<NinthDay>());
 }
 
 AdventOfCode::~AdventOfCode() {

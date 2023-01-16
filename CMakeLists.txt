@@ -45,5 +45,6 @@ target_include_directories(${PROJECT} PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/days/sixthDay
     ${CMAKE_CURRENT_SOURCE_DIR}/days/seventhDay
     ${CMAKE_CURRENT_SOURCE_DIR}/days/eighthDay
+    ${CMAKE_CURRENT_SOURCE_DIR}/days/ninthDay
     ${CMAKE_CURRENT_SOURCE_DIR}/adventUtil
 )
