@@ -3,6 +3,7 @@
 *.txt
 !CMakeLists.txt
 build/*
+build_debug /*
 .vscode/
 # Compiled Object files
 *.slo
