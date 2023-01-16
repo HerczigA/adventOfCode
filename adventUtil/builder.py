@@ -108,7 +108,7 @@ class Builder():
             
     def createComponent(self):
         if self.args.day:
-            self.componentGenerator= CreateNewDay(self.args.day)
+            self.componentGenerator = CreateNewDay(self.args.day)
             self.componentGenerator.createDay()
             
 

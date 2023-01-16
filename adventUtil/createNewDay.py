@@ -60,10 +60,14 @@ void {self.className}::getInput(string& filePath)
         """
     
     def createHeader(self):
+        if os.path.exists(self.newHeader):
+            return
         with open(self.newHeader, 'w') as f:
             f.write(self.patternHeader)
 
     def createSource(self):
+        if os.path.exists(self.newSource):
+            return
         with open(self.newSource, 'w') as f:
             f.write(self.patternSource)
     
@@ -80,8 +84,7 @@ void {self.className}::getInput(string& filePath)
         with open("./CMakeLists.txt", "w") as f:
             fileContent = "".join(fileContent)
             f.write(fileContent)
-            
-        
+    
     
     def createDay(self):
         if self.folderName is None:
@@ -89,9 +92,58 @@ void {self.className}::getInput(string& filePath)
             return
         
         os.chdir(os.getcwd() +"/days")
-        if not os.path.exists(self.folderName):
-            os.mkdir(self.folderName)
-            os.chdir(self.folderName)
-            self.createHeader()
-            self.createSource()
-            self.updateCMakeLists()
+        if os.path.exists(self.folderName):
+            os.remove(self.folderName +"/"+ self.newHeader)
+            os.remove(self.folderName +"/"+ self.newSource)
+            os.rmdir(self.folderName)    
+        os.mkdir(self.folderName)
+        os.chdir(self.folderName)
+        self.createHeader()
+        self.createSource()
+        self.updateCMakeLists()
+        self.updateAdventOfCode()
+            
+    def updateAdventOfCode(self):
+        os.chdir(os.getcwd() +"/days")
+        self.updateAdventHeader()
+        self.updateAdventSource()
+        
+    
+    def updateAdventHeader(self):
+        fileContent = None
+        newIncludePath = 5
+        newIncludeIdx = 0
+        includeHeader = f'#include "{self.newHeader}"\n'
+        includePath = f'\t\t\t\t\tinputPath + "input{self.className}.txt",\n'
+        with open("./adventOfCode.h", "r") as aocH:
+            fileContent = aocH.readlines()
+            for line in fileContent:
+                if line == "#ifdef RELEASE_AOC\n":
+                    newIncludeIdx -= 1
+                    break
+                newIncludeIdx += 1
+                
+            fileContent.insert(newIncludeIdx, includeHeader)
+            fileContent.insert(len(fileContent)-newIncludePath, includePath)
+            with open("./adventOfCode.h", "w") as f:
+                fileContent = "".join(fileContent)
+                f.write(fileContent)
+            pass
+        pass
+    
+    def updateAdventSource(self):
+        fileContent = None
+        newPushbackIdx = 0
+        pushBackNewObject = f"\tmDaysGroup.push_back(make_unique<{self.className}>());\n"
+        with open("./adventOfCode.cpp", "r") as aocS:
+            fileContent = aocS.readlines()
+            for line in fileContent:
+                if line.find("}") != -1:
+                    break
+                newPushbackIdx +=1
+            fileContent.insert(newPushbackIdx, pushBackNewObject)
+            
+        with open("./adventOfCode.cpp", "w") as f:
+            fileContent = "".join(fileContent)
+            f.write(fileContent)
+        pass
