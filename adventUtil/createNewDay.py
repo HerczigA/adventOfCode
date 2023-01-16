@@ -28,9 +28,9 @@ class {self.className} : public Days
     public:
         {self.className}();
         void doWork() override;
-        void printResults() override;
         void getInput(string& filePath) override;
     private:
+        void printResults() override;
     
 {self.closeBracket};
         """
@@ -45,6 +45,7 @@ class {self.className} : public Days
 void {self.className}::doWork()
 {self.openBracket}
 
+    printResults();
 {self.closeBracket}
 
 void {self.className}::printResults()
