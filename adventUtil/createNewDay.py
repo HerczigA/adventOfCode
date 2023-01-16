@@ -93,8 +93,9 @@ void {self.className}::getInput(string& filePath)
         
         os.chdir(os.getcwd() +"/days")
         if os.path.exists(self.folderName):
-            os.remove(self.folderName +"/"+ self.newHeader)
-            os.remove(self.folderName +"/"+ self.newSource)
+            if os.listdir(self.folderName):
+                os.remove(self.folderName +"/"+ self.newHeader)
+                os.remove(self.folderName +"/"+ self.newSource)
             os.rmdir(self.folderName)    
         os.mkdir(self.folderName)
         os.chdir(self.folderName)

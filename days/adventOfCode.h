@@ -26,13 +26,13 @@ class AdventOfCode
         string& getFileName(int index);
         vector<string> mAdventInputs{
                     inputPath + "inputFirstDay.txt",
-                    inputPath + "/inputSecondDay.txt",
-                    inputPath + "/inputThirdDay.txt",
-                    inputPath + "/inputFourthDay.txt",
-                    inputPath + "/inputFifthDay.txt",
-                    inputPath + "/inputSixthDay.txt",
-                    inputPath + "/inputSeventhDay.txt",
-                    inputPath + "/inputEighthDay.txt",
+                    inputPath + "inputSecondDay.txt",
+                    inputPath + "inputThirdDay.txt",
+                    inputPath + "inputFourthDay.txt",
+                    inputPath + "inputFifthDay.txt",
+                    inputPath + "inputSixthDay.txt",
+                    inputPath + "inputSeventhDay.txt",
+                    inputPath + "inputEighthDay.txt",
                     #if USE_PROBE_FILE
                     inputPath + "/probe.txt"
                     #endif
