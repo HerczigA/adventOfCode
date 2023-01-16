@@ -6,11 +6,12 @@
 #include "fifthDay.h"
 #include "sixthDay.h"
 #include "seventhDay.h"
+#include "eighthDay.h"
 
 #ifdef RELEASE_AOC
-    const string inputPath="../";
+    const string inputPath="../adventUtil/";
 #else
-    const string inputPath="./";
+    const string inputPath="./adventUtil/";
 #endif
 
 
@@ -24,15 +25,16 @@ class AdventOfCode
         vector<unique_ptr<Days>> mDaysGroup;
         string& getFileName(int index);
         vector<string> mAdventInputs{
-                    inputPath + "adventUtil/inputFirstDay.txt",
-                    inputPath + "adventUtil/inputSecondDay.txt",
-                    inputPath + "adventUtil/inputThirdDay.txt",
-                    inputPath + "adventUtil/inputFourthDay.txt",
-                    inputPath + "adventUtil/inputFifthDay.txt",
-                    inputPath + "adventUtil/inputSixthDay.txt",
-                    inputPath + "adventUtil/inputSeventhDay.txt",
+                    inputPath + "inputFirstDay.txt",
+                    inputPath + "/inputSecondDay.txt",
+                    inputPath + "/inputThirdDay.txt",
+                    inputPath + "/inputFourthDay.txt",
+                    inputPath + "/inputFifthDay.txt",
+                    inputPath + "/inputSixthDay.txt",
+                    inputPath + "/inputSeventhDay.txt",
+                    inputPath + "/inputEighthDay.txt",
                     #if USE_PROBE_FILE
-                    inputPath + "adventUtil/probe.txt"
+                    inputPath + "/probe.txt"
                     #endif
         };
 };

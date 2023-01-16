@@ -9,6 +9,14 @@ class EighthDay : public Days
           X,
           Y
         };
+
+        enum Directions
+        {
+            Left,
+            Right,
+            Up,
+            Down
+        };
         
         struct TreeStorage
         {
@@ -39,8 +47,11 @@ class EighthDay : public Days
         void iterateBackWay();
         void collectIndexes();
         void turnForest();
+        void lookForHighestScenicSpot();
+        void calculateScenicScore(int & rowIndex, int & colIndex);
         
         vector<vector<TreeStorage>> mForest;
+        uint mBestSpot = 1;
         int mVisibleTrees;
         
     

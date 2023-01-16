@@ -22,12 +22,17 @@ void EighthDay::doWork()
         turnForest();
     }
     collectIndexes();
+    turnForest();
+    turnForest();
+    lookForHighestScenicSpot();
+
     printResults();
 }
 
 void EighthDay::printResults()
 {
     cout << "The number of visible trees in the forest are " << mVisibleTrees << endl;
+    cout << "The best spot has "<< mBestSpot << " score " << endl;
 }
 
 void EighthDay::getInput(string& filePath)
@@ -109,9 +114,7 @@ void EighthDay::iterateBackWay()
             if(highestTree == maxSize)
                 break;
         }
-        
     }
-    
 }
 
 void EighthDay::collectIndexes()
@@ -139,4 +142,76 @@ void EighthDay::turnForest()
         rotatedForrest.push_back(newRow);
     }
     mForest = rotatedForrest;
+}
+
+
+void EighthDay::lookForHighestScenicSpot()
+{
+    
+    for(int rowIdx = 1; rowIdx <mForest.size()-2; rowIdx++ )
+    {
+        for(int colIdx  = 1; colIdx < mForest[rowIdx].size()-2; colIdx++ )
+        {
+            if(mForest[rowIdx][colIdx].isHeighest)
+                calculateScenicScore(rowIdx, colIdx);
+        }
+    }
+}
+    
+    
+void EighthDay::calculateScenicScore(int & rowIndex, int & colIndex)
+{
+    const int height = mForest[rowIndex][colIndex].treeHeight;
+    int score = 1;
+    int seight;
+    int _rowIdx = rowIndex;
+    int _colIdx = colIndex;
+    for(int dir = Directions::Left; dir <= Directions::Down; dir++)
+    {
+        seight = 1;
+        switch (dir)
+        {
+            case Directions::Left:
+                while(_colIdx != 0 && mForest[_rowIdx][--_colIdx].treeHeight <  height)
+                {
+                    if(_colIdx != 0)
+                        seight++;
+                }
+                score *= seight;
+                break;
+            case Directions::Right:
+                _colIdx = colIndex;
+                while(_colIdx != mForest[0].size()-1 && mForest[_rowIdx][++_colIdx].treeHeight < height)
+                {
+                    if(_colIdx != mForest[0].size() -1)
+                        seight++;
+                }
+                score *= seight;
+                break;
+            case Directions::Up:
+                // _rowIdx = rowIndex;
+                _colIdx = colIndex;
+                while(_rowIdx != 0 && mForest[--_rowIdx][_colIdx].treeHeight <  height)
+                {
+                    if(_rowIdx != 0)
+                        seight++;
+                }
+                score *= seight;
+                break;
+            case Directions::Down:
+                _rowIdx = rowIndex;
+                _colIdx = colIndex;
+                while(_rowIdx != mForest.size()-1 && mForest[++_rowIdx][_colIdx].treeHeight <  height)
+                {
+                    if(_rowIdx != mForest[0].size() -1)
+                        seight++;
+                }
+                score *= seight;
+                break;
+            default:
+                break;
+        }
+    }
+    if(mBestSpot < score)
+        mBestSpot = score;
 }
