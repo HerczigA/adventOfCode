@@ -11,13 +11,12 @@ class FirstDay : public Days{
         };
         ~FirstDay(){};
         void doWork() override;
-        void printResults() override;
         int getResWithoutNoise() const;
         int getResWithNoise() const;
         void getInput(string& filePath) override;
         vector<int> getMeasurments() const;
-
     private:
+        void printResults() override;
         void measureWithoutNoise();
         void measureWithNoise();
         int mMeasursWithoutNoise;

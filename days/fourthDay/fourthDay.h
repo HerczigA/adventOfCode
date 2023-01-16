@@ -16,9 +16,9 @@ class FourthDay : public Days
     public:
         FourthDay();
         void doWork()  override;
-        void printResults() override;
         void getInput(string& filePath) override;
     private:
+        void printResults() override;
         integerArrayPairs parsingPairs(string& line);
         fourthDayFormat mSectionIDs;
         int mFullyOverlapping;

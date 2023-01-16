@@ -33,9 +33,9 @@ class Days{
 
         virtual void getInput(string& filePath) = 0;
         virtual void doWork() = 0;
-        virtual void printResults() = 0;
         virtual ~Days(){};
     protected:
+        virtual void printResults() = 0;    
         int openInput(string &filePath, ifstream& file);
     private:
         

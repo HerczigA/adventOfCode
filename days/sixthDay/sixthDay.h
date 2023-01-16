@@ -14,9 +14,9 @@ class SixthDay : public Days
     public:
         SixthDay();
         void doWork() override;
-        void printResults() override;
         void getInput(string& filePath) override;
     private:
+        void printResults() override;
         bool movingWindowForMarker(string& pattern, int &markerType);
         void findMarkerByType(int type);
         string mDataStream;

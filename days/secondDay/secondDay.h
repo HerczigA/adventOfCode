@@ -20,11 +20,10 @@ class SecondDay : public Days{
         };
         ~SecondDay(){};
         void doWork() override;
-        void printResults() override;
         void getInput(string& filePath) override;
         multimap<string,string> getResults()const ;
-        
     private:
+        void printResults() override;
         void encryptingStrategy();
         void decryptingStrategy();
         void calculateSummary();

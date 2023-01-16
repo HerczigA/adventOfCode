@@ -4,6 +4,11 @@
     #define ROOT_PATH "/home"
 #endif
 
+const uint32_t minSize=100000;
+const uint32_t totalSize=70000000;
+const uint32_t updateSize=30000000;
+const uint8_t DIR_LENGTH_CUTOFF=5;
+
 SeventhDay::SeventhDay()
     : mTotalSize(0)
 {

@@ -20,12 +20,12 @@ class ThirdDay : public Days
         };
         ~ThirdDay(){};
         void doWork() override;
-        void printResults() override;
         int getSummary() const;
         void getInput(string& filePath) override;
         vector<string> getMeasurments() const;
 
     private:
+        void printResults() override;
         void splitUp(string& line);
         void getDuplicateItem(const set<char>& pattern1, const set<char>& pattern2);
         void calculateSummaries();

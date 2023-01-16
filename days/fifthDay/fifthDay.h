@@ -16,9 +16,9 @@ class FifthDay : public Days
     public:
         FifthDay();
         void doWork() override;
-        void printResults() override;
         void getInput(string& filePath) override;
     private:
+        void printResults() override;
         void workingCrateMover9000(vector<int>& moves);
         void workingCrateMover9001(vector<int>& moves);
         void parsingCrates(vector<string>& crates);
