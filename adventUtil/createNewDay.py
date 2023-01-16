@@ -55,7 +55,22 @@ void {self.className}::printResults()
 
 void {self.className}::getInput(string& filePath)
 {self.openBracket}
+    int result;
+    ifstream inputFile;
+    string line;
+    
+    result = openInput(filePath, inputFile);
+    
+    if(result)
+        return;
 
+    while(getline(inputFile, line)) 
+    {self.openBracket}
+        
+
+        
+    {self.closeBracket}
+    inputFile.close();
 {self.closeBracket}
         """
     
