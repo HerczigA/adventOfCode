@@ -1,32 +1,41 @@
 #pragma once 
 #include "utils.h" 
 
+
+
 class NinthDay : public Days 
 {
     public:
-        struct Origo
+        
+     struct Input{
+        string dir;
+        int step;
+     };
+     struct Position
         {
             int x;
             int y;
-            Origo()
+            Position()
             : x(0)
             , y(0)
-            {
+            { }
 
-            }
         };
-        struct MotionSeries
-        {
-            char direction;
-            uint8_t steps;
-        };
+        
         NinthDay();
         void doWork() override;
         void getInput(string& filePath) override;
     private:
+        void convertInput(string &line);
         void printResults() override;
-        Origo mOrigo;
-        uint mVisitedPoints;
-        list<MotionSeries> mPoints;
+        // bool isHeadOnTail();
+        void iterateTail(Input& pos);
+        // void iterateDirectionX(Input& pos);
+        // void iterateDirectionY(Input& pos);
+        set<string> mCoordinates;
+        Position mPositionT;
+        Position mPositionH;
+        list<Input> mPoints;
+        
 };
         

@@ -2,9 +2,7 @@
 
 const int minSize = 0;
 const int maxSize = 9;
-const int asciiTable = 48;
 
-// 1036 is too low
 // 1829
 
 EighthDay::EighthDay()

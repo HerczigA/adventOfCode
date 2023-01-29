@@ -22,6 +22,7 @@ using namespace std;
     #define USE_PROBE_FILE 0
 #endif
 
+const int asciiTable = 48;
 
 class Days{
     public:
