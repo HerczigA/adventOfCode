@@ -30,8 +30,8 @@ class NinthDay : public Days
         void printResults() override;
         // bool isHeadOnTail();
         void iterateTail(Input& pos);
-        // void iterateDirectionX(Input& pos);
-        // void iterateDirectionY(Input& pos);
+        void iterateDirectionX(Input& pos);
+        void iterateDirectionY(Input& pos);
         set<string> mCoordinates;
         Position mPositionT;
         Position mPositionH;
