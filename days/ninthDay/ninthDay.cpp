@@ -42,7 +42,8 @@ void NinthDay::convertInput(string &line)
 {
     Input input;
     input.dir = line[0];
-    input.step = static_cast<int>(line[2]) - asciiTable;
+    line = line.substr(2);
+    input.step = atoi(line.c_str());
     mPoints.push_back(input);
 }
 
