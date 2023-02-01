@@ -1,8 +1,6 @@
 #pragma once 
 #include "utils.h" 
 
-
-
 class NinthDay : public Days 
 {
     public:
@@ -19,9 +17,15 @@ class NinthDay : public Days
             : x(0)
             , y(0)
             { }
-
+            
+            bool operator<(const Position& pos) const
+            {
+                if(x == pos.x)
+                    return y < pos.y;
+                else
+                    return x < pos.x;
+            }
         };
-        
         NinthDay();
         void doWork() override;
         void getInput(string& filePath) override;
@@ -29,13 +33,14 @@ class NinthDay : public Days
         void convertInput(string &line);
         void printResults() override;
         // bool isHeadOnTail();
-        void iterateTail(Input& pos);
+        void iterateTailFirstPart(Input& pos);
+        void iterateTailSecondPart(Input& pos);
         void iterateDirectionX(Input& pos);
         void iterateDirectionY(Input& pos);
-        set<string> mCoordinates;
+        // set<string> mCoordinates;
+        set<Position> mCoordinates;
         Position mPositionT;
         Position mPositionH;
         list<Input> mPoints;
         
 };
-        

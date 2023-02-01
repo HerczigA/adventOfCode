@@ -5,15 +5,16 @@ NinthDay::NinthDay()
     : mPositionT(Position())
     , mPositionH(Position())
 {
-    
-    mCoordinates.insert({"0-0"});
+    mCoordinates.insert({mPositionH});
 }
 
 void NinthDay::doWork()
 {
     for(auto coordinate : mPoints)
-        iterateTail(coordinate);
-        
+        iterateTailFirstPart(coordinate);
+    
+    // for(auto coordinate : mPoints)
+    //     iterateTailSecondPart(coordinate);
     printResults();
 }
 
@@ -47,7 +48,7 @@ void NinthDay::convertInput(string &line)
     mPoints.push_back(input);
 }
 
-void NinthDay::iterateTail(Input& pos)
+void NinthDay::iterateTailFirstPart(Input& pos)
 {
     if(pos.dir == "R" || pos.dir == "L")
         iterateDirectionX(pos);
@@ -64,7 +65,7 @@ void NinthDay::iterateDirectionX(Input& pos)
         else
             knot.x--;
     };
-    string coordinate;
+    Position coordinate;
     for(int i = 0; i < pos.step; i++)
     {
         stepDirHorizontally(mPositionH);
@@ -83,14 +84,14 @@ void NinthDay::iterateDirectionX(Input& pos)
             stepDirHorizontally(mPositionT);
             
         }
-        coordinate = to_string(mPositionT.x) + "-" + to_string(mPositionT.y);
+        coordinate = mPositionT;
         mCoordinates.insert({coordinate});
     }
 }
 
 void NinthDay::iterateDirectionY(Input& pos)
 {
-    string coordinate;
+    Position coordinate;
     auto stepDirVetically = [&](Position& knot){
         if(pos.dir == "U")
             knot.y++;
@@ -116,7 +117,7 @@ void NinthDay::iterateDirectionY(Input& pos)
             stepDirVetically(mPositionT);
             
         }
-        coordinate = to_string(mPositionT.x) + "-" + to_string(mPositionT.y);
+        coordinate = mPositionT;
         mCoordinates.insert({coordinate});
     }
 }
