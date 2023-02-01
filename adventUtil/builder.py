@@ -25,7 +25,7 @@ class Builder():
         parser.add_argument("-d", "--debug", action="store_true")
         parser.add_argument("-r", "--remove", action="store_true")
         parser.add_argument("-D", "--day", type=int, choices=range(1, 26))
-        parser.add_argument("-mf", "--makefiles", type=str, help="Component for buildin new *>h and *.cpp component")
+        parser.add_argument("-mf", "--makefiles", type=str, help="Component for building new *.h and *.cpp component")
         self.args = parser.parse_args()
         pass
     

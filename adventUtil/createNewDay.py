@@ -18,61 +18,45 @@ class CreateNewDay():
         self.newSource = self.days.get(numberOfDay) +"Day.cpp"
         self.folderName = self.days.get(numberOfDay) +"Day"
         self.className = self.folderName[0].upper() + self.folderName[1:]
-        self.openBracket =  "{"
-        self.closeBracket = "}"
-        self.patternHeader = f"""#pragma once 
-#include \"utils.h\" 
-
-class {self.className} : public Days 
-{self.openBracket}
-    public:
-        {self.className}();
-        void doWork() override;
-        void getInput(string& filePath) override;
-    private:
-        void printResults() override;
-    
-{self.closeBracket};
-        """
+        self.inputFile = "intput" + self.className + ".txt"
+        self.rootFolder = os.path.abspath(os.getcwd())
+        self.patternHeader = f"""\r#pragma once \
+                                \r#include \"utils.h\"\n \
+                                \rclass {self.className} : public Days \
+                                \r{{ \
+                                \r\tpublic: \
+                                \r\t\t{self.className}(); \
+                                \r\t\tvoid doWork() override; \
+                                \r\t\tvoid getInput(string& filePath) override; \
+                                \r\tprivate: \
+                                \r\t\tvoid printResults() override;\n \
+                                \r}};"""
         
-        self.patternSource = f"""#include \"{self.newHeader}\"
+        self.patternSource = f"""#include \"{self.newHeader}\" \n \
 
-{self.className}::{self.className}()
-{self.openBracket}
-
-{self.closeBracket}
-
-void {self.className}::doWork()
-{self.openBracket}
-
-    printResults();
-{self.closeBracket}
-
-void {self.className}::printResults()
-{self.openBracket}
-
-{self.closeBracket}
-
-void {self.className}::getInput(string& filePath)
-{self.openBracket}
-    int result;
-    ifstream inputFile;
-    string line;
-    
-    result = openInput(filePath, inputFile);
-    
-    if(result)
-        return;
-
-    while(getline(inputFile, line)) 
-    {self.openBracket}
-        
-
-        
-    {self.closeBracket}
-    inputFile.close();
-{self.closeBracket}
-        """
+                            \r{self.className}::{self.className}() \
+                            \r{{\n \
+                            \r}}\n \
+                            \rvoid {self.className}::doWork() \
+                            \r{{ \
+                            \r\tprintResults(); \
+                            \r}}\n \
+                            \rvoid {self.className}::printResults()\
+                            \r{{\n \
+                            \r}}\n \
+                            \rvoid {self.className}::getInput(string& filePath) \
+                            \r{{ \
+                            \r\tint result; \
+                            \r\tifstream inputFile; \
+                            \r\tstring line;\n \
+                            \r\tresult = openInput(filePath, inputFile);\n \
+                            \r\tif(result) \
+                            \r\t\treturn;\n \
+                            \r\twhile(getline(inputFile, line)) \
+                            \r\t{{\n\n \
+                            \r\t}} \
+                            \r\tinputFile.close(); \
+                            \r}}"""
     
     def createHeader(self):
         if os.path.exists(self.newHeader):
@@ -106,7 +90,7 @@ void {self.className}::getInput(string& filePath)
             print("Forgot to give argument for component creator")
             return
         
-        os.chdir(os.getcwd() +"/days")
+        os.chdir(self.rootFolder +"/days")
         if os.path.exists(self.folderName):
             if os.listdir(self.folderName):
                 os.remove(self.folderName +"/"+ self.newHeader)
@@ -118,12 +102,12 @@ void {self.className}::getInput(string& filePath)
         self.createSource()
         self.updateCMakeLists()
         self.updateAdventOfCode()
+        self.createNewInputTxt()
             
     def updateAdventOfCode(self):
-        os.chdir(os.getcwd() +"/days")
+        os.chdir(self.rootFolder +"/days")
         self.updateAdventHeader()
         self.updateAdventSource()
-        
     
     def updateAdventHeader(self):
         fileContent = None
@@ -162,4 +146,11 @@ void {self.className}::getInput(string& filePath)
         with open("./adventOfCode.cpp", "w") as f:
             fileContent = "".join(fileContent)
             f.write(fileContent)
-        pass
+    
+    def createNewInputTxt(self):
+        os.chdir(self.rootFolder + "/adventUtil")
+        if os.path.exists(self.inputFile):
+            return
+        with open(self.inputFile, 'w') as f:
+            pass
+                

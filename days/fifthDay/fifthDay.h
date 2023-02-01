@@ -2,7 +2,7 @@
 #include "utils.h" 
 
 // First part's solution was : RNZLFZSJH
-// Second part's solution was : RNZLFZSJH
+// Second part's solution was : CNSFCGJSM
 const int columns = 9;
 class FifthDay : public Days 
 {
